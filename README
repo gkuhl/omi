@@ -1,0 +1,69 @@
+Description
+===========
+The OMI Python package is an implementation of a gridding
+algorithm to project measurements of the Ozone Monitoring
+Instrument (OMI) from the instrument’s frame of reference
+to a longitude-latitude grid.
+
+The algorithm is described in the following paper. Please
+cite the it, if you use this software in your work:
+  G. Kuhlmann, A. Hartl, H. M. Cheung, Y. F. Lam, and
+  M. O. Wenig: A novel gridding algorithm to create 
+  regional trace gas maps from satellite observations, 
+  Atmos. Meas. Tech. Discuss., 6, 7867-7910, 
+  http://dx.doi.org/10.5194/amtd-6-7867-2013, 2013.
+
+
+Requirements
+============
+- python 2.5 (or higher, not 3.x)
+- numpy
+- scipy
+- h5py
+
+- cython (only if C code shall be created from *.pyx)
+- matplotlib (only for plotting)
+- basemap (only for plotting)
+
+
+Installing
+==========
+1) unzip "tar -xvf omi-X.Y.Z.tar.gz"
+2) cd into "omi-X.Y.Z"
+3) run "python setup.py build" 
+4) run "python setup.py install"
+   or "python setup.py install --prefix=~/local" 
+
+
+Documentation
+=============
+The package provides functions for created Level 3 data using 
+either constant values or parabolic splines. An example script
+for OMI tropospheric NO2 column densities is provided in the
+example folder.
+
+
+Copyright
+=========
+Copyright (C) 2013 Gerrit Kuhlmann
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Contact
+=======
+Gerrit Kuhlmann <gerrit.kuhlmann@gmail.com>
+http://gkuhl.wordpress.com
+
+

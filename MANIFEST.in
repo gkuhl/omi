@@ -1,0 +1,6 @@
+include README
+include LICENSE
+include MANIFEST.in
+include omi/data/*
+include doc/*
+include examples/*
