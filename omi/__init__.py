@@ -115,10 +115,13 @@ class Grid(object):
         Save Grid to `filename` as image
         (requires matplotlib and basemap)
         """
-        import matplotlib as mpl
-        mpl.use("Agg")
-        import matplotlib.pyplot as plt
-        from mpl_toolkits.basemap import Basemap
+        try:
+            import matplotlib as mpl
+            mpl.use("Agg")
+            import matplotlib.pyplot as plt
+            from mpl_toolkits.basemap import Basemap
+        except ImportError:
+            print "No matplotlib and/or basemap to create 'png' image."
 
         fig = plt.figure(figsize=(8, 8*self.ratio))
         ax = fig.add_axes([0.05, 0.05, 0.9, 0.9])
