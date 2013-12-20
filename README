@@ -1,17 +1,17 @@
 Description
 ===========
-The OMI Python package is an implementation of a gridding
-algorithm to project measurements of the Ozone Monitoring
-Instrument (OMI) from the instrument’s frame of reference
-to a longitude-latitude grid.
+The OMI Python package is an implementation of a gridding algorithm
+to project measurements of the Ozone Monitoring Instrument (OMI)
+from the instrument’s frame of reference to a longitude-latitude
+grid.
 
 The algorithm is described in the following paper. Please
 cite the it, if you use this software in your work:
-  G. Kuhlmann, A. Hartl, H. M. Cheung, Y. F. Lam, and
-  M. O. Wenig: A novel gridding algorithm to create 
-  regional trace gas maps from satellite observations, 
-  Atmos. Meas. Tech. Discuss., 6, 7867-7910, 
-  http://dx.doi.org/10.5194/amtd-6-7867-2013, 2013.
+
+G. Kuhlmann, A. Hartl, H. M. Cheung, Y. F. Lam, and M. O. Wenig:
+A novel gridding algorithm to create regional trace gas maps from
+satellite observations, Atmos. Meas. Tech. Discuss., 6, 7867-7910, 
+http://dx.doi.org/10.5194/amtd-6-7867-2013, 2013.
 
 
 Requirements
@@ -28,19 +28,57 @@ Requirements
 
 Installing
 ==========
-1) unzip "tar -xvf omi-X.Y.Z.tar.gz"
-2) cd into "omi-X.Y.Z"
-3) run "python setup.py build" 
-4) run "python setup.py install"
-   or "python setup.py install --prefix=~/local" 
+1) You can download the directory containing the source code using
+the git clone command. Type:
+
+    git clone https://github.com/gkuhl/omi
+
+(If you don't have "git" installed on your computer, you can also
+download the source code using the "Download ZIP" button on the
+GitHub website.)
+
+2) "cd" into the directory created by "git".
+
+3) To build the C code in the package run
+
+    python setup.py build
+
+This requires a C compiler and "cython". If you don't want to use
+"cython", please modify the "setup.py" file by changing
+
+    USE_CYTHON = True
+
+to
+
+    USE_CYTHON = False
+
+
+4) To finish the installation run
+
+    python setup.py install
+
+If you want to install the package locally, e.g. in "~/local", you
+can use the "--prefix" option:
+
+    python setup.py install --prefix=~/local
+
+
+5) To test the installation, you can try the example script
+"OMNO2_Trop.py". Please note that you have to download the OMI NO2
+and PIXCOR data at 
+
+    http://disc.sci.gsfc.nasa.gov/Aura/data-holdings/OMI
+
+to run the example. Please read the example script for details.
 
 
 Documentation
 =============
-The package provides functions for created Level 3 data using 
-either constant values or parabolic splines. An example script
-for OMI tropospheric NO2 column densities is provided in the
-example folder.
+The package provides functions for created Level 3 data using  either
+constant values or parabolic splines. An example script for OMI
+tropospheric NO2 column densities is provided in the example folder.
+Please read the description in the example script ("OMNO2_Trop.py")
+and the docstrings in the source code for detailed information.
 
 
 Copyright

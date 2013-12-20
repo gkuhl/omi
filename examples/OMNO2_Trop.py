@@ -9,6 +9,13 @@ import numpy.ma as ma
 import omi
 
 
+#########################################################################
+# This is an example script for gridding OMI data using the Python OMI 
+# package (please start reading this file at the bottom after the
+# "if __name__ == '__main__'" line.
+#########################################################################
+
+
 
 NAME2DATASET_PIXEL = {}
 omi.he5.create_name2dataset(
@@ -176,13 +183,27 @@ def main(start_date, end_date, gridding_method, grid_name, data_path):
 
 
 if __name__ == '__main__':
+
+    # "data_path" is the root path to your OMI data. Please change it for
+    # you settings. 
+    #
+    # The OMI files are assumed to be location at:
+    #    "{data_path}/{product}/level2/{year}/{doy}/*.he5"
+    #
+    # For example:
+    #    "/home/gerrit/Data/OMI/OMNO2.003/level2/2006/123/*.he5"
+    # 
     data_path = '/home/gerrit/Data/OMI'
 
+    # The start and end date of Level 2 data you want to grid. The end_date
+    # is NOT included!
     start_date = datetime(2006,10,5)
     end_date = datetime(2006,10,6)
 
+    # Name of the level 3 grid
     grid_name = 'prd'
 
+    # Call main function twice to grid data using CVM and PSM
     main(start_date, end_date, 'cvm', grid_name, data_path)
     main(start_date, end_date, 'psm', grid_name, data_path)
 
