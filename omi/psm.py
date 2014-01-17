@@ -869,6 +869,9 @@ def parabolic_spline_algorithm(values, stddev, dx, dy, gamma, rho_est,
     qx *= rho_est
     qy *= rho_est
 
+    values *= rho_est
+    stddev *= rho_est
+
     return p, d, qx, qy, alpha, beta
 
 
