@@ -128,7 +128,7 @@ def iter_filenames(start_date, end_date, products, data_path):
             yield filename
 
 
-def write_datasets(filename, data):
+def write_datasets(filename, data, mode='w'):
     """\
     Writes data as HDF 5 file. Creates path if it does
     not exists. Can handle sparse matrices.
@@ -142,6 +142,10 @@ def write_datasets(filename, data):
         datasets to be written to HDF5 file as:
         "[(name, array), (name, array), ...]
 
+    mode : string
+        file mode (default overwrite 'w')
+        use 'a' to append to existing file
+
     """
     dirname = os.path.dirname(filename)
     if dirname:
@@ -151,7 +155,7 @@ def write_datasets(filename, data):
             if error.errno != errno.EEXIST:
                 raise error
 
-    with h5py.File(filename, 'w') as fobj:
+    with h5py.File(filename, mode) as fobj:
         for name, value in data:
             if sparse.issparse(value):
                 d = fobj.create_dataset(name, shape=value.shape, fillvalue=0.0, compression='gzip')
