@@ -8,10 +8,10 @@ grid.
 The algorithm is described in the following paper. Please
 cite the it, if you use this software in your work:
 
-G. Kuhlmann, A. Hartl, H. M. Cheung, Y. F. Lam, and M. O. Wenig:
-A novel gridding algorithm to create regional trace gas maps from
-satellite observations, Atmos. Meas. Tech. Discuss., 6, 7867-7910, 
-http://dx.doi.org/10.5194/amtd-6-7867-2013, 2013.
+Kuhlmann, G., Hartl, A., Cheung, H. M., Lam, Y. F., and
+Wenig, M. O.: A novel gridding algorithm to create regional
+trace gas maps from satellite observations, Atmos. Meas. Tech.,
+7, 451-467, doi:10.5194/amt-7-451-2014, 2014.
 
 
 Requirements
