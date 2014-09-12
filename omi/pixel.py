@@ -18,14 +18,16 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import division
+from __future__ import print_function
+
 import os
 
 import numpy as np
 
-import convert
+import omi.convert
 
 #import pyximport; pyximport.install()
-import cgrate
+import omi.cgrate
 
 
 EARTH_RADIUS = 6378.5 # km
@@ -42,23 +44,23 @@ def compute_pixel_size(tiled_lon, tiled_lat, only_dx=False):
     dx = np.ones((m,n))
     dy = 13.5 * np.ones((m,n))
 
-    for i in xrange(n):
-        for j in xrange(m):
+    for i in range(n):
+        for j in range(m):
             dx[j,i] = 0.5 * (
-                cgrate.geo_distance(tiled_lon[0,j,i], tiled_lat[0,j,i],
+                omi.cgrate.geo_distance(tiled_lon[0,j,i], tiled_lat[0,j,i],
                                     tiled_lon[1,j,i], tiled_lat[1,j,i]) +
-                cgrate.geo_distance(tiled_lon[3,j,i], tiled_lat[3,j,i],
+                omi.cgrate.geo_distance(tiled_lon[3,j,i], tiled_lat[3,j,i],
                                     tiled_lon[2,j,i], tiled_lat[2,j,i])
             )
 
     if not only_dx:
 
-        for i in xrange(n):
-            for j in xrange(m):
+        for i in range(n):
+            for j in range(m):
                 dy[j,i] = 0.5 * (
-                    cgrate.geo_distance(tiled_lon[0,j,i], tiled_lat[0,j,i],
+                    omi.cgrate.geo_distance(tiled_lon[0,j,i], tiled_lat[0,j,i],
                                         tiled_lon[3,j,i], tiled_lat[3,j,i]) +
-                    cgrate.geo_distance(tiled_lon[1,j,i], tiled_lat[1,j,i],
+                    omi.cgrate.geo_distance(tiled_lon[1,j,i], tiled_lat[1,j,i],
                                         tiled_lon[2,j,i], tiled_lat[2,j,i])
                 )
 
@@ -76,8 +78,8 @@ def compute_distance(lon, lat, sc_lon, sc_lat, sc_alt):
 
     n_rows, n_cols = lon.shape
 
-    ground_points = convert.sphere2rect((lon, lat, EARTH_RADIUS))
-    sat_positions = convert.sphere2rect((sc_lon, sc_lat, sc_alt))
+    ground_points = omi.convert.sphere2rect((lon, lat, EARTH_RADIUS))
+    sat_positions = omi.convert.sphere2rect((sc_lon, sc_lat, sc_alt))
     sat_positions = sat_positions[:,:,np.newaxis].repeat(n_cols, axis=2)
 
     d = sat_positions - ground_points

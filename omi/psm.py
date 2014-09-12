@@ -164,13 +164,13 @@ def create_knot_set(center, dy, y_min, y_max):
     yp = [ -0.5 * dy[center], 0.5 * dy[center] ]
     indices = [center, center+1]
 
-    for i in xrange(center+1, dy.size):
+    for i in range(center+1, dy.size):
         if yp[-1] >= y_max:
             break
         yp.append(yp[-1] + dy[i])
         indices.append(indices[-1] + 1)
 
-    for i in xrange(center-1, -1, -1):
+    for i in range(center-1, -1, -1):
         if yp[0] <= y_min:
             break
         yp.insert(0, yp[0] - dy[i])
@@ -342,7 +342,7 @@ def compute_overlap(yp, y_min, y_max, indices):
 
     # coverage of W(y) over knot set
     coverage = {}
-    for i in xrange(yp.size-1):
+    for i in range(yp.size-1):
         coverage[indices[i]] = [alpha[i], beta[i]]
 
     return coverage
@@ -425,7 +425,7 @@ def M_matrix(values, stddev, dy, distances, exposure_time, missing_values,
     indices = []
     indptr = [0]
 
-    for row in xrange(values.size):
+    for row in range(values.size):
         if np.isfinite(values[row]):
 
             if lut is None:
@@ -470,7 +470,7 @@ def C1_matrix(h):
 
     C[0,0:3] = [-4.0, +6.0, -2.0]
 
-    for row in xrange(1, a.size):
+    for row in range(1, a.size):
         col = 2 * row
 
         C[row, col-2] =         a[row-1]
@@ -495,7 +495,7 @@ def L2_matrix(m):
     """
     L2 = sparse.lil_matrix((m-2, 2*m+1))
 
-    for row in xrange(m-2):
+    for row in range(m-2):
 
         col = 2 * (row + 1) + 1
 
@@ -596,7 +596,7 @@ def across_track(d, h):
     b[0] = -6.0 * d[0]
 
     # C1 continuity
-    for i in xrange(1, a.size):
+    for i in range(1, a.size):
         C[i, i-1] = a[i-1]
         C[i, i  ] = 2.0 * (a[i-1] + a[i])
         C[i, i+1] = a[i]
@@ -841,7 +841,7 @@ def parabolic_spline_algorithm(values, stddev, dx, dy, gamma, rho_est,
 
 
     # compute d and qx
-    for i in xrange(n):
+    for i in range(n):
         x, alpha[:,i], beta[:,i] = along_track(values[:,i], stddev[:,i], dy[:,i], gamma[i],
             distances[:,i], exposure_time=exposure_time, missing_values=missing_values[:,i],
             auc=area_under_curve, lut=lut, rho_est=1.0
@@ -851,7 +851,7 @@ def parabolic_spline_algorithm(values, stddev, dx, dy, gamma, rho_est,
 
 
     # compute qy
-    for j in xrange(m):
+    for j in range(m):
         qy[j,:] = across_track(d[j,:], dx[j,:])
 
 
@@ -859,7 +859,7 @@ def parabolic_spline_algorithm(values, stddev, dx, dy, gamma, rho_est,
     p[0,:] = across_track(qx[0,:], dx[0,:])
     p[-1,:] = across_track(qx[-1,:], dx[-1,:])
 
-    for j in xrange(1,m):
+    for j in range(1,m):
         p[j,:] = across_track(qx[j,:], 0.5 * (dx[j-1,:] + dx[j,:])  )
 
 

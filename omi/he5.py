@@ -17,6 +17,9 @@
 # along with the OMI Python Package. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
+
 from datetime import datetime, timedelta
 
 import glob
@@ -47,7 +50,7 @@ def iter_dates(start, end, step=1):
     -------
     >>> from datetime import date
     >>> for d in iter_dates(date(2010,1,1), date(2010,1,3)):
-    ...     print d
+    ...     print(d)
     ...
     2010-01-01
     2010-01-02
@@ -193,11 +196,11 @@ def read_datasets(filename, name2dataset):
     data = dict()
 
     with h5py.File(filename, 'r') as f:
-        for name, path in name2dataset.iteritems():
+        for name, path in name2dataset.items():
             field = f.get(path, None)
 
             if field is None:
-                print 'Warning: No %s in %s.' % (path, filename)
+                print('Warning: No %s in %s.' % (path, filename))
                 data[name] = None
             else:
                 fill_value = field.attrs.get('_FillValue', None)

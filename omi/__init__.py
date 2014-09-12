@@ -18,18 +18,20 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import division
+from __future__ import print_function
+
 import json
 import os
 
 import numpy as np
 import scipy.interpolate
 
-import he5
-import pixel
-import psm
+import omi.he5
+import omi.pixel
+import omi.psm
 
 #import pyximport; pyximport.install()
-import cgrate
+import omi.cgrate
 
 
 PACKAGE_DATA_FOLDER = os.path.join(os.path.dirname(__file__), 'data')
@@ -107,7 +109,7 @@ class Grid(object):
             ('errors', self.errors),
             ('weights', self.weights)
         ]
-        he5.write_datasets(filename, data)
+        omi.he5.write_datasets(filename, data)
 
 
     def save_as_image(self, filename, vmin=None, vmax=None):
@@ -120,8 +122,9 @@ class Grid(object):
             mpl.use("Agg")
             import matplotlib.pyplot as plt
             from mpl_toolkits.basemap import Basemap
-        except ImportError:
-            print "No matplotlib and/or basemap to create 'png' image."
+        except ImportError as e:
+            print("No matplotlib and/or basemap to create 'png' image.")
+            raise e
 
         fig = plt.figure(figsize=(8, 8*self.ratio))
         ax = fig.add_axes([0.05, 0.05, 0.9, 0.9])
@@ -299,7 +302,7 @@ def psm_grid(grid, lon_center, lat_center, lon_corner, lat_corner,
         of distribution (the value is also
         used to scale `values` and `stddev`)
 
-    lut : psm.MMatrixLUT or None, 'none'
+    lut : omi.psm.MMatrixLUT or None, 'none'
         look-up table for entries of measurement
         matrix M as function of distance between
         spacecraft and ground pixel.
@@ -320,19 +323,19 @@ def psm_grid(grid, lon_center, lat_center, lon_corner, lat_corner,
 
     # distance and exposure time
     exposure_time = 2.0
-    distances = pixel.compute_distance(
+    distances = omi.pixel.compute_distance(
         lon_center, lat_center,
         lon_spacecraft, lat_spacecraft, alt_spacecraft
     )
 
     # gamma and LUT for matrix M (kappa)
     if lut is None:
-        lut = psm.MMatrixLUT(PACKAGE_DATA_FOLDER)
+        lut = omi.psm.MMatrixLUT(PACKAGE_DATA_FOLDER)
     elif lut == 'none':
         lut  = None
 
     # compute grid distances
-    dx, dy = pixel.compute_pixel_size(lon_corner, lat_corner, only_dx=True)
+    dx, dy = omi.pixel.compute_pixel_size(lon_corner, lat_corner, only_dx=True)
 
     # interpolate missing data
     missing_values = values.mask.copy()
@@ -341,13 +344,13 @@ def psm_grid(grid, lon_center, lat_center, lon_corner, lat_corner,
     stddev[missing_values] = rho_est
 
     # compute coeffiencts of PSM spline
-    p, d, qx, qy, alpha, beta = psm.parabolic_spline_algorithm(values, stddev, dx, dy,
+    p, d, qx, qy, alpha, beta = omi.psm.parabolic_spline_algorithm(values, stddev, dx, dy,
         gamma, rho_est, distances, exposure_time, missing_values, lut=lut)
 
     # grid using PSM spline
     lon_corner_grid, lat_corner_grid = geo_to_grid(grid, lon_corner, lat_corner)
 
-    grid.values = cgrate.draw_orbit(
+    grid.values = omi.cgrate.draw_orbit(
         grid.lon, grid.lat, grid.values, grid.errors, grid.weights,
         lon_corner_grid, lat_corner_grid,
         lon_corner, lat_corner,
@@ -393,7 +396,7 @@ def cvm_grid(grid, lon_corner, lat_corner, values, errors,
     """
     lon_corner_grid, lat_corner_grid = geo_to_grid(grid, lon_corner, lat_corner)
 
-    grid.values = cgrate.draw_orbit(
+    grid.values = omi.cgrate.draw_orbit(
         grid.lon, grid.lat, grid.values, grid.errors, grid.weights,
         lon_corner_grid, lat_corner_grid,
         None, None,
@@ -461,7 +464,7 @@ def clip_orbit(grid, lon, lat, data, boundary=(2,2)):
         longitude and latitude of pixel centers or corners
 
     data : dict(key->np.ndarray)
-        OMI data e.g. loaded with `he5.read_datasets`
+        OMI data e.g. loaded with `omi.he5.read_datasets`
 
     boundary : tuple (default: (2,2))
         Number of extra pixels (x-direction and y-direction)
@@ -544,7 +547,7 @@ def remove_out_of_domain_data(data, domain, boundary):
     col_indices = np.arange(x_slice.start, x_slice.stop)
     domain = domain[y_slice,x_slice]
 
-    for name, field in data.iteritems():
+    for name, field in data.items():
 
         if field.ndim == 1:
             if field.size in [30, 60]:

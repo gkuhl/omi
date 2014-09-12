@@ -9,13 +9,14 @@ files = ["data/*", '*.pyx']
 from distutils.core import setup
 from distutils.extension import Extension
 
+import numpy
 
 
 # build extension with CYTHON?
-USE_CYTHON = True
+USE_CYTHON = False
 
 ext = '.pyx' if USE_CYTHON else '.c'
-extensions = [Extension("cgrate", ["omi/cgrate"+ext])]
+extensions = [Extension("omi.cgrate", ["omi/cgrate"+ext])]
 
 if USE_CYTHON:
     from Cython.Build import cythonize
@@ -42,5 +43,6 @@ setup(
                           ],
     packages            = ['omi'],
     package_data        = {'omi': files},
-    ext_modules         = extensions
+    ext_modules         = extensions,
+    include_dirs        = [numpy.get_include()]
 )
