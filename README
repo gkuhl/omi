@@ -16,7 +16,7 @@ trace gas maps from satellite observations, Atmos. Meas. Tech.,
 
 Requirements
 ============
-- python 2.6 or 3.x (not all versions have been tested)
+- python 2.6, 2.7 and 3.x (not all versions have been tested)
 - numpy
 - scipy
 - h5py
