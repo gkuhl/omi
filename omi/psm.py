@@ -18,6 +18,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import division
+import logging
 import os
 
 import numpy as np
@@ -435,9 +436,19 @@ def M_matrix(values, stddev, dy, distances, exposure_time, missing_values,
                 )
 
             else:
-                row_entries, columns, m_coverage = look_up_M_matrix_row(row, dy,
+                limits = lut._limits.keys()
+                if min(limits) <= distances[row] <= max(limits):
+                    logging.debug('Use LUT for distance %d.' % distances[row])
+                    row_entries, columns, m_coverage = look_up_M_matrix_row(row, dy,
                         distances[row], lut
-                )
+                    )
+                else:
+                    logging.debug('Distance %d not LUT, compute M matrix entries.' 
+                        % distances[row])
+                    # numerical integration (simpson)
+                    row_entries, columns, m_coverage = compute_M_matrix_row(row, dy,
+                            distances[row], exposure_time, area_under_curve
+                    )
 
             # add  only valid (i.e. measured) values to coverage
             if not missing_values[row]:
